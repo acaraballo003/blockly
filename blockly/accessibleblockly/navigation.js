@@ -426,21 +426,29 @@ Blockly.Accessibility.Navigation.inlineBlockTraverseIn = function(){
     console.log(Blockly.selected);
   // ** TO DO ONLY SELECT INLINE BLOCKS NOT INNER BLOCKS**    
 
-  //select childblocks of currently selected block
-  if(Blockly.selected.childBlocks_.length-1 > Blockly.Accessibility.Navigation.inlineCount){
-        Blockly.selected.childBlocks_[Blockly.Accessibility.Navigation.inlineCount].select(); 
-        Blockly.Accessibility.Navigation.inlineCount++;
-    }
+//  //select childblocks of currently selected block
+//  if(Blockly.selected.childBlocks_.length-1 > Blockly.Accessibility.Navigation.inlineCount){
+//        Blockly.selected.childBlocks_[Blockly.Accessibility.Navigation.inlineCount].select(); 
+//        Blockly.Accessibility.Navigation.inlineCount++;
+//    }
 
-   //select the first childblock
-   else if(Blockly.selected.childBlocks_.length-1 == Blockly.Accessibility.Navigation.inlineCount){
+//   //select the first childblock
+//   else if(Blockly.selected.childBlocks_.length-1 == Blockly.Accessibility.Navigation.inlineCount){
 
-        Blockly.selected.childBlocks_[Blockly.Accessibility.Navigation.inlineCount].select(); 
-        Blockly.Accessibility.Navigation.inlineCount == 0;
-    }
+//        Blockly.selected.childBlocks_[Blockly.Accessibility.Navigation.inlineCount].select(); 
+//        Blockly.Accessibility.Navigation.inlineCount == 0;
+//    }
+	if(Blockly.selected.inputList[0].connection.targetConnection != null){
+		console.log(Blockly.selected.inputList[0]);
+		Blockly.selected.inputList[0].connection.targetConnection.sourceBlock_.select();
+	}
+	
+	else if(Blockly.selected.inputList[0].connection.targetConnection == null){
+		console.log("Cannot move further inwards.");
+	}
  
-  //select childblocks of the parent block (example [(1) = (2)]  with 1 selected select 2 and vice versa)
-  else{
+    //select childblocks of the parent block (example [(1) = (2)]  with 1 selected select 2 and vice versa)
+    else{
         try{
             Blockly.selected.parentBlock_.childBlocks_[Blockly.Accessibility.Navigation.inlineCount].select();
             Blockly.Accessibility.Navigation.inlineCount++;
