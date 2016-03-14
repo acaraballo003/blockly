@@ -438,19 +438,26 @@ Blockly.Accessibility.Navigation.inlineBlockTraverseIn = function(){
 //        Blockly.selected.childBlocks_[Blockly.Accessibility.Navigation.inlineCount].select(); 
 //        Blockly.Accessibility.Navigation.inlineCount == 0;
 //    }
-	if(Blockly.selected.inputList[0].connection.targetConnection != null){
-		console.log(Blockly.selected.inputList[0]);
-		Blockly.selected.inputList[0].connection.targetConnection.sourceBlock_.select();
+	
+	//basic logic blocks have inputList lengths of 2 as well as other loop blocks
+	if(Blockly.selected.inputList.length == 2){
+		//null check to see if inLine traversal is possible
+		if(Blockly.selected.inputList[0].connection.targetConnection != null){
+			//selects the first inline block
+			Blockly.selected.inputList[0].connection.targetConnection.sourceBlock_.select();
+			
+		}
+		else{
+			console.log("Cannot travel further inwards");
+		}
 	}
 	
-	else if(Blockly.selected.inputList[0].connection.targetConnection == null){
-		console.log("Cannot move further inwards.");
-	}
- 
+	//for blocks with multiple in line blocks
     //select childblocks of the parent block (example [(1) = (2)]  with 1 selected select 2 and vice versa)
     else{
         try{
-            Blockly.selected.parentBlock_.childBlocks_[Blockly.Accessibility.Navigation.inlineCount].select();
+            //Blockly.selected.parentBlock_.childBlocks_[Blockly.Accessibility.Navigation.inlineCount].select();
+			Blockly.selected.parentBlock_.inputList[Blockly.Accessibility.Navigation.inlineCount].connection.targetConnection.sourceBlock_.select();
             Blockly.Accessibility.Navigation.inlineCount++;
         }
         //loop through children
@@ -460,15 +467,19 @@ Blockly.Accessibility.Navigation.inlineBlockTraverseIn = function(){
 
             //if block has a parent
             if(Blockly.selected.parentBlock_){
-                 Blockly.selected.parentBlock_.childBlocks_[Blockly.Accessibility.Navigation.inlineCount].select(); 
+                 //Blockly.selected.parentBlock_.childBlocks_[Blockly.Accessibility.Navigation.inlineCount].select();
+				 Blockly.selected.parentBlock_.inputList[Blockly.Accessibility.Navigation.inlineCount].connection.targetConnection.sourceBlock_.select(); 
                  Blockly.Accessibility.Navigation.inlineCount++; 
             }  
             //if on the top block select the first child again
             else{
-                Blockly.selected.childBlocks_[Blockly.Accessibility.Navigation.inlineCount].select();
+                //Blockly.selected.childBlocks_[Blockly.Accessibility.Navigation.inlineCount].select();
+				Blockly.selected.inputList[Blockly.Accessibility.Navigation.inlineCount].connection.targetConnection.sourceBlock_.select();
             }
         }
   }
+	
+	
 };
 
 /**
